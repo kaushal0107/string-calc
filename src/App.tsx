@@ -1,23 +1,30 @@
 import React, { useState } from "react";
-import { add } from './utils/add'
+import { add } from "./utils/add";
 
 const App = () => {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
 
   const handleCalculate = () => {
     try {
       if (!input.trim()) {
         throw new Error("Input cannot be empty. Please enter numbers.");
       }
+
       setError(null);
       const sum = add(input);
       setResult(`Result: ${sum}`);
+      setHistory((prevHistory) => [...prevHistory, `${input} = ${sum}`]);
     } catch (e: any) {
       setError(e.message);
       setResult(null);
     }
+  };
+
+  const handleClearHistory = () => {
+    setHistory([]);
   };
 
   return (
@@ -71,6 +78,29 @@ const App = () => {
           >
             {result}
           </p>
+        )}
+        {history.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-xl font-semibold text-gray-700 mb-2">
+              Calculation History
+            </h2>
+            <ul className="space-y-2">
+              {history.map((entry, index) => (
+                <li
+                  key={index}
+                  className="p-3 bg-gray-100 rounded-lg shadow-sm text-gray-700"
+                >
+                  {entry}
+                </li>
+              ))}
+            </ul>
+            <button
+              onClick={handleClearHistory}
+              className="mt-4 w-full bg-red-500 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-red-600 transition duration-200"
+            >
+              Clear History
+            </button>
+          </div>
         )}
       </div>
     </div>
