@@ -50,3 +50,19 @@ test('handles a large number of inputs with a custom delimiter', () => {
     const largeInput = "//;\n" + Array.from({ length: 100 }, (_, i) => i + 1).join(";");
     expect(add(largeInput)).toBe(5050);
 });
+
+test('throws an exception for a single negative number', () => {
+    expect(() => add("1,-2,3")).toThrow("Negatives not allowed: -2");
+});
+
+test('throws an exception for multiple negative numbers', () => {
+    expect(() => add("1,-2,-3,4")).toThrow("Negatives not allowed: -2, -3");
+});
+
+test('does not throw an exception for positive numbers', () => {
+    expect(add("1,2,3")).toBe(6);
+});
+
+test('supports custom delimiters and throws an exception for negatives', () => {
+    expect(() => add("//;\n1;-2;3;-4")).toThrow("Negatives not allowed: -2, -4");
+});
