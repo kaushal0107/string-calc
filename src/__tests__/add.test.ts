@@ -19,3 +19,8 @@ test('returns the sum of multiple numbers', () => {
 test('handles spaces in input string', () => {
     expect(add("1, 2, 3")).toBe(6);
 });
+
+test('handles a large number of inputs', () => {
+    const largeInput = Array.from({ length: 100 }, (_, i) => i + 1).join(",");
+    expect(add(largeInput)).toBe(5050);
+})
