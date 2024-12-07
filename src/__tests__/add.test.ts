@@ -33,3 +33,20 @@ test('handles a large number of inputs with mixed separators', () => {
     const largeInput = "1,2\n3,4\n5,6\n7,8,9,10";
     expect(add(largeInput)).toBe(55);
 });
+
+test('supports custom delimiters', () => {
+    expect(add("//;\n1;2")).toBe(3);
+});
+
+test('supports custom delimiters with different characters', () => {
+    expect(add("//|\n1|2|3")).toBe(6);
+});
+
+test('supports custom delimiters while handling mixed cases', () => {
+    expect(add("//#\n1#2,3\n4")).toBe(10);
+});
+
+test('handles a large number of inputs with a custom delimiter', () => {
+    const largeInput = "//;\n" + Array.from({ length: 100 }, (_, i) => i + 1).join(";");
+    expect(add(largeInput)).toBe(5050);
+});
